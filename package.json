@@ -1,0 +1,31 @@
+{
+  "name": "niffler",
+  "version": "4.1.0",
+  "description": "Fastify TypeScript starter repository",
+  "scripts": {
+    "watch": "tsc --watch --preserveWatchOutput --pretty",
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "rimraf dist && tsc",
+    "start": "node dist/index.js"
+  },
+  "author": "binghuis <binghuis@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.7.7",
+    "fastify": "^5.1.0",
+    "fastify-plugin": "^5.0.1",
+    "puppeteer": "^23.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.8.6",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "fastify-tsconfig": "^2.0.0",
+    "nodemon": "^3.1.7",
+    "prettier": "^3.3.3",
+    "rimraf": "^5.0.7",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.6.3"
+  }
+}
