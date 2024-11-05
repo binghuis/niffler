@@ -1,35 +1,26 @@
-# Fastify & Typescript App
+# Niffler
 
-> Fastify & TypeScript starter repository.
-
-## Installation
-
-```bash
-$ git clone https://github.com/Matschik/fastify-typescript-starter.git
-$ cd fastify-typescript-starter
-$ npm run install
-```
-
-## Usage
+> Niffler is Chasing the Shiny Meme Coins.
 
 ### Development
+
 ```bash
 # Required: typescript watch compilation
-$ npm run watch
+$ pnpm watch
 
 # Required: development server with hot reload (nodemon)
-$ npm run dev
+$ pnpm dev
 
 # Format with prettier
-$ npm run format
+$ pnpm format
 ```
 
 ### Production
 
 ```bash
 # build for production
-$ npm run build
+$ pnpm build
 
 # start production app
-$ npm run start
+$ pnpm start
 ```
