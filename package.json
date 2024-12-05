@@ -23,7 +23,7 @@
     "dotenv": "^16.4.5",
     "fastify-tsconfig": "^2.0.0",
     "nodemon": "^3.1.7",
-    "prettier": "^3.3.3",
+    "prettier": "^3.4.2",
     "rimraf": "^5.0.7",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.6.3"
