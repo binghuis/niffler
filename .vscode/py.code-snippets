@@ -2,6 +2,7 @@
   "Main Block": {
     "prefix": "__main",
     "body": ["if __name__ == \"__main__\":", "\tpass"],
-    "description": "Main block"
+    "description": "Main block",
+    "scope": "python"
   }
 }
