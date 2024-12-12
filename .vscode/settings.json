@@ -1,0 +1,30 @@
+{
+  "editor.formatOnSave": true,
+  "notebook.formatOnSave.enabled": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "python.analysis.extraPaths": [],
+  "code-runner.clearPreviousOutput": true,
+  "code-runner.executorMap": {
+    "python": "pdm run python -u"
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "liveServer.settings.port": 5501,
+  "[hosts]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  }
+}
