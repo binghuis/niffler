@@ -1,16 +1,18 @@
-from telegram import Update
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import ApplicationBuilder
 
 from niffler.config import get_settings
 
 
-async def hello(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    if update.message and update.effective_user:
-        await update.message.reply_text(f"Hello {update.effective_user.first_name}")
+class Bot:
+    def __init__(self):
+        settings = get_settings()
+        self.app = ApplicationBuilder().token(settings.tg_bot_token).build()
 
+    def add_handler(self, handler):
+        self.app.add_handler(handler)
 
-app = ApplicationBuilder().token(get_settings().tg_bot_token).build()
+    def run_polling(self):
+        self.app.run_polling()
 
-app.add_handler(CommandHandler("hello", hello))
-
-app.run_polling()
+    def run_webhook(self):
+        self.app.run_webhook()

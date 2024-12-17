@@ -24,4 +24,4 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.pdm.scripts]
-dev = "uvicorn src.niffler.main:app --reload"
+dev = "python src/niffler/main.py"
