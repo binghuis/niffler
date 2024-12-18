@@ -4,7 +4,6 @@ version = "0.1.0"
 description = "✨ Niffler is Chasing the Shiny Meme Coins."
 authors = [{ name = "binghuis", email = "soongbinghui@gmail.com" }]
 dependencies = [
-    "fastapi>=0.115.6",
     "uvicorn[standard]>=0.32.1",
     "python-dotenv>=1.0.1",
     "pydantic-settings>=2.6.1",
