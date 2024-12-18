@@ -7,7 +7,8 @@ RUN pip install -U pdm
 ENV PDM_CHECK_UPDATE=false
 
 WORKDIR /project
-COPY pyproject.toml pdm.lock README.md /project/
+
+COPY pyproject.toml pdm.lock README.md ./
 
 RUN pdm install --check --prod --no-editable
 
@@ -15,7 +16,8 @@ RUN pdm install --check --prod --no-editable
 FROM python:$PYTHON_BASE
 
 WORKDIR /project
-COPY --from=builder /project/.venv/ /project/.venv
+
+COPY --from=builder /project/.venv/ ./.venv
 ENV PATH="/project/.venv/bin:$PATH"
 
 ENV PYTHONPATH="/project/src:$PYTHONPATH"
