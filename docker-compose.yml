@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  niffler:
+    container_name: niffler-bot
+    build:
+      context: .
+    restart: always
+    volumes:
+      - ./logs:/app/logs
+    mem_limit: 512m
+    cpus: 2
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"

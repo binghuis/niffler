@@ -24,3 +24,4 @@ distribution = true
 
 [tool.pdm.scripts]
 dev = "python src/niffler/main.py"
+prod = "python src/niffler/main.py --env production"
