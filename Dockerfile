@@ -1,11 +1,25 @@
-FROM python:3.13-slim
+ARG PYTHON_BASE=3.13-slim
 
-RUN pip install --no-cache-dir pdm
+# Build stage
+FROM python:$PYTHON_BASE AS builder
 
-WORKDIR /app
+RUN pip install -U pdm
+ENV PDM_CHECK_UPDATE=false
 
-COPY . .
+WORKDIR /project
+COPY pyproject.toml pdm.lock README.md /project/
 
-RUN pdm install --production --no-cache
+RUN pdm install --check --prod --no-editable
 
-CMD ["pdm", "prod"]
+# Run stage
+FROM python:$PYTHON_BASE
+
+WORKDIR /project
+COPY --from=builder /project/.venv/ /project/.venv
+ENV PATH="/project/.venv/bin:$PATH"
+
+ENV PYTHONPATH="/project/src:$PYTHONPATH"
+
+COPY src /project/src
+
+CMD ["python", "src/niffler/__main__.py"]

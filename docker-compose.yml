@@ -1,13 +1,14 @@
-version: "3.8"
-
 services:
   niffler:
+    image: binghuis/niffler:latest
     container_name: niffler-bot
     build:
       context: .
     restart: always
+    env_file:
+      - .env
     volumes:
-      - ./logs:/app/logs
+      - ./logs:/project/logs
     mem_limit: 512m
     cpus: 2
     logging:
