@@ -23,7 +23,9 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.pdm.scripts]
-dev = "python -u src/niffler"
+dev = "python reloadable.py src/niffler"
 
 [dependency-groups]
-dev = []
+dev = [
+    "watchdog>=6.0.0",
+]
