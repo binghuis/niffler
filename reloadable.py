@@ -1,52 +1,73 @@
+import sys
 from subprocess import Popen
-from sys import argv
 from threading import Timer
+from typing import Optional
 
+from rich.console import Console
 from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
-SCRIPT_FILENAME = argv[1]
+console = Console()
 
 
-class Runner:
-    __proc = None
-    __handler_func = None
+class ScriptReloader:
+    process: Optional[Popen] = None
+    restart_timer: Optional[Timer] = None
+    script_path: str
 
-    @staticmethod
-    def run():
-        Runner.__proc = Popen(["python", SCRIPT_FILENAME])
+    def __init__(self, script_path: str):
+        self.script_path = script_path
 
-    @staticmethod
-    def handle_file_modified(event):
-        if Runner.__proc:
-            Runner.__proc.kill()
-        if Runner.__handler_func:
-            Runner.__handler_func.cancel()
-        Runner.__handler_func = Timer(1, Runner.run)
-        Runner.__handler_func.start()
+    def start_script(self):
+        if self.process:
+            self.process.kill()
+            print("旧进程已终止。")
 
+        print("启动新脚本进程...")
+        self.process = Popen(["python", self.script_path])
 
-def setup_watcher():
-    event_handler = PatternMatchingEventHandler(patterns=["*.py"])
-    event_handler.on_modified = Runner.handle_file_modified
+    def setup_file_watcher(self):
+        print("初始化文件监视器...")
+        file_event_handler = PatternMatchingEventHandler(patterns=["*.py"])
+        file_event_handler.on_modified = self.on_file_change_detected
 
-    watcher = Observer()
-    watcher.schedule(event_handler, "./src/niffler", recursive=True)
-    return watcher
+        file_watcher = Observer()
+        file_watcher.schedule(file_event_handler, "./src/niffler", recursive=True)
+        return file_watcher
+
+    def on_file_change_detected(self, event):
+        if self.restart_timer:
+            self.restart_timer.cancel()
+
+        print(f"检测到文件更改: {event.src_path}")
+        self.restart_timer = Timer(1, self.start_script)
+        self.restart_timer.start()
 
 
 def main():
-    Runner.run()
-    file_watcher = setup_watcher()
+    if len(sys.argv) < 2:
+        print("用法: python reloadable.py <脚本文件路径>")
+        return
+
+    script_file_path = sys.argv[1]
+    reloader = ScriptReloader(script_file_path)
+    reloader.start_script()
+    file_watcher = reloader.setup_file_watcher()
 
     try:
         file_watcher.start()
+        print("文件监视器已启动。")
         while file_watcher.is_alive():
             file_watcher.join(1)
     except KeyboardInterrupt:
-        file_watcher.stop()
+        print("中断信号接收，准备退出...")
     finally:
-        file_watcher.join()
+        if file_watcher.is_alive():
+            file_watcher.stop()
+            file_watcher.join()
+        if reloader.process:
+            reloader.process.kill()
+            print("脚本进程已终止。")
 
 
 if __name__ == "__main__":

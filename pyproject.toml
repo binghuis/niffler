@@ -28,4 +28,5 @@ dev = "python reloadable.py src/niffler"
 [dependency-groups]
 dev = [
     "watchdog>=6.0.0",
+    "rich>=13.9.4",
 ]
