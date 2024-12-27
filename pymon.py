@@ -10,6 +10,11 @@ from watchdog.events import PatternMatchingEventHandler
 from watchdog.observers import Observer
 
 console = Console()
+# console.quiet = True
+
+
+def log_event(message: str, color: str):
+    console.log(f"[{color}]{message}[/{color}]")
 
 
 class PyMon:
@@ -22,7 +27,7 @@ class PyMon:
         self.script_path = script_path
         atexit.register(self.cleanup)
 
-    def start_script(self):
+    def start(self):
         if self.process:
             log_event("关闭旧进程...", "yellow")
             self.process.terminate()
@@ -31,7 +36,7 @@ class PyMon:
         log_event("开启新进程...", "green")
         self.process = Popen(["python", self.script_path])
 
-    def init_watcher(self, watched_dir: str):
+    def watcher(self, watched_dir: str):
         log_event("初始化文件监视器...", "blue")
         file_event_handler = PatternMatchingEventHandler(patterns=["*.py"])
         setattr(file_event_handler, "on_modified", self.on_file_change_detected)
@@ -45,7 +50,7 @@ class PyMon:
             self.restart_timer.cancel()
 
         log_event(f"文件已修改: {event.src_path}", "magenta")
-        self.restart_timer = Timer(1, self.start_script)
+        self.restart_timer = Timer(1, self.start)
         self.restart_timer.start()
 
     def cleanup(self):
@@ -57,21 +62,16 @@ class PyMon:
             self.restart_timer.cancel()
 
 
-def log_event(message: str, color: str):
-    console.log(f"[{color}]{message}[/{color}]")
-
-
 def main():
     if len(sys.argv) < 3:
         console.log("[red]用法: python pymon.py <脚本文件路径> <监视目录>[/red]")
         return
 
-    script_path = sys.argv[1]
-    watched_dir = sys.argv[2]
+    script_path, watched_dir = sys.argv[1], sys.argv[2]
 
     pymon = PyMon(script_path)
-    pymon.start_script()
-    file_watcher = pymon.init_watcher(watched_dir)
+    pymon.start()
+    file_watcher = pymon.watcher(watched_dir)
 
     def handle_exit(signum, frame):
         console.log("[red]收到中断信号，正在退出...[/red]")
@@ -82,7 +82,7 @@ def main():
 
     try:
         file_watcher.start()
-        console.log("[green]文件监视器已启动，正在监控变更...[/green]")
+        console.log("[green]监控文件变更...[/green]")
         while file_watcher.is_alive():
             file_watcher.join(1)
     finally:
