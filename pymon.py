@@ -64,7 +64,7 @@ class PyMon:
 
 def main():
     if len(sys.argv) < 3:
-        console.log("[red]用法: python pymon.py <脚本文件路径> <监视目录>[/red]")
+        log_event("用法: python pymon.py <脚本文件路径> <监视目录>", "red")
         return
 
     script_path, watched_dir = sys.argv[1], sys.argv[2]
@@ -74,7 +74,7 @@ def main():
     file_watcher = pymon.watcher(watched_dir)
 
     def handle_exit(signum, frame):
-        console.log("[red]收到中断信号，正在退出...[/red]")
+        log_event("收到中断信号，正在退出...", "red")
         file_watcher.stop()
 
     signal.signal(signal.SIGINT, handle_exit)
@@ -82,12 +82,12 @@ def main():
 
     try:
         file_watcher.start()
-        console.log("[green]监控文件变更...[/green]")
+        log_event("监控文件变更...", "green")
         while file_watcher.is_alive():
             file_watcher.join(1)
     finally:
         pymon.cleanup()
-        console.log("[blue]PyMon 已终止。[blue]")
+        log_event("PyMon 已终止。", "blue")
 
 
 if __name__ == "__main__":
