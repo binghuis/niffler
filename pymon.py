@@ -12,8 +12,8 @@ from watchdog.observers import Observer
 console = Console()
 
 
-class PythonScriptWatcher:
-    """A utility to monitor Python scripts for changes and automatically restart them."""
+class PyMon:
+    """用于监控 Python 脚本变更并自动重启的工具。"""
 
     process: Optional[Popen] = None
     restart_timer: Optional[Timer] = None
@@ -23,65 +23,58 @@ class PythonScriptWatcher:
         atexit.register(self.cleanup)
 
     def start_script(self):
-        """Start or restart the target Python script."""
         if self.process:
-            self.log_event("Restarting script...", "yellow")
+            log_event("关闭旧进程...", "yellow")
             self.process.terminate()
             self.process.wait()
 
-        self.log_event("Starting new script process...", "green")
+        log_event("开启新进程...", "green")
         self.process = Popen(["python", self.script_path])
 
-    def initialize_file_watcher(self, watched_directory: str):
-        """Set up the file watcher to monitor changes in the specified directory."""
-        self.log_event("Setting up file watcher...", "blue")
+    def init_watcher(self, watched_dir: str):
+        log_event("初始化文件监视器...", "blue")
         file_event_handler = PatternMatchingEventHandler(patterns=["*.py"])
         setattr(file_event_handler, "on_modified", self.on_file_change_detected)
 
         file_watcher = Observer()
-        file_watcher.schedule(file_event_handler, watched_directory, recursive=True)
+        file_watcher.schedule(file_event_handler, watched_dir, recursive=True)
         return file_watcher
 
     def on_file_change_detected(self, event):
-        """Handle file modification events by restarting the script."""
         if self.restart_timer:
             self.restart_timer.cancel()
 
-        self.log_event(f"File changed: {event.src_path}", "magenta")
+        log_event(f"文件已修改: {event.src_path}", "magenta")
         self.restart_timer = Timer(1, self.start_script)
         self.restart_timer.start()
 
     def cleanup(self):
-        """Clean up resources on exit."""
         if self.process:
-            self.log_event("Cleaning up script process...", "red")
+            log_event("执行清理操作...", "red")
             self.process.terminate()
             self.process.wait()
         if self.restart_timer:
             self.restart_timer.cancel()
 
-    @staticmethod
-    def log_event(message: str, color: str):
-        """Unified method for logging events."""
-        console.log(f"[{color}]{message}[/{color}]")
+
+def log_event(message: str, color: str):
+    console.log(f"[{color}]{message}[/{color}]")
 
 
 def main():
     if len(sys.argv) < 3:
-        console.log(
-            "[red]Usage: python reloadable.py <script_file_path> <watched_directory>[/red]"
-        )
+        console.log("[red]用法: python pymon.py <脚本文件路径> <监视目录>[/red]")
         return
 
-    script_file_path = sys.argv[1]
-    watched_directory = sys.argv[2]
+    script_path = sys.argv[1]
+    watched_dir = sys.argv[2]
 
-    watcher = PythonScriptWatcher(script_file_path)
-    watcher.start_script()
-    file_watcher = watcher.initialize_file_watcher(watched_directory)
+    pymon = PyMon(script_path)
+    pymon.start_script()
+    file_watcher = pymon.init_watcher(watched_dir)
 
     def handle_exit(signum, frame):
-        console.log("[red]Interrupt signal received. Exiting...[/red]")
+        console.log("[red]收到中断信号，正在退出...[/red]")
         file_watcher.stop()
 
     signal.signal(signal.SIGINT, handle_exit)
@@ -89,12 +82,12 @@ def main():
 
     try:
         file_watcher.start()
-        console.log("[green]File watcher started. Monitoring changes...[/green]")
+        console.log("[green]文件监视器已启动，正在监控变更...[/green]")
         while file_watcher.is_alive():
             file_watcher.join(1)
     finally:
-        watcher.cleanup()
-        console.log("[blue]PythonScriptWatcher terminated.[/blue]")
+        pymon.cleanup()
+        console.log("[blue]PyMon 已终止。[blue]")
 
 
 if __name__ == "__main__":

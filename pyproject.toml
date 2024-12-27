@@ -23,7 +23,7 @@ build-backend = "pdm.backend"
 distribution = true
 
 [tool.pdm.scripts]
-dev = "python reloadable.py src/niffler/__main__.py src/niffler"
+dev = "python pymon.py src/niffler/__main__.py src/niffler"
 
 [dependency-groups]
 dev = [
