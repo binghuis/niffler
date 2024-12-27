@@ -16,7 +16,3 @@ class Bot:
 
     def run_webhook(self):
         self.app.run_webhook()
-
-    async def shutdown_bot(self):
-        if self.app.running:
-            await self.app.stop()
