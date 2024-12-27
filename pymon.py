@@ -1,4 +1,3 @@
-import atexit
 import signal
 import sys
 from subprocess import Popen
@@ -13,8 +12,8 @@ console = Console()
 # console.quiet = True
 
 
-def log(message: str, color: str):
-    console.log(f"[{color}]{message}[/{color}]")
+def log(msg: str, color: str):
+    console.log(f"[{color}]{msg}[/{color}]")
 
 
 class PyMon:
@@ -25,7 +24,6 @@ class PyMon:
 
     def __init__(self, script_path: str):
         self.script_path = script_path
-        atexit.register(self.cleanup)
 
     def start(self):
         if self.process:
