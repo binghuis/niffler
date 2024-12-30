@@ -16,6 +16,26 @@ def log(msg: str, color: str):
     console.log(f"[{color}]{msg}[/{color}]")
 
 
+def logsuccess(msg: str):
+    log(msg, "green")
+
+
+def loginfo(msg: str):
+    log(msg, "blue")
+
+
+def logwarn(msg: str):
+    log(msg, "yellow")
+
+
+def logerror(msg: str):
+    log(msg, "red")
+
+
+def logdebug(msg: str):
+    log(msg, "magenta")
+
+
 class PyMon:
     """用于监控 Python 脚本变更并自动重启的工具。"""
 
@@ -27,15 +47,15 @@ class PyMon:
 
     def start(self):
         if self.process:
-            log("关闭旧进程...", "yellow")
+            logwarn("关闭旧进程...")
             self.process.terminate()
             self.process.wait()
 
-        log("开启新进程...", "green")
+        loginfo("开启新进程...")
         self.process = Popen(["python", self.script_path])
 
     def watcher(self, watched_dir: str):
-        log("初始化文件监视器...", "blue")
+        loginfo("初始化文件监视器...")
         file_event_handler = PatternMatchingEventHandler(patterns=["*.py"])
         setattr(file_event_handler, "on_modified", self.on_file_change_detected)
 
@@ -47,13 +67,13 @@ class PyMon:
         if self.restart_timer:
             self.restart_timer.cancel()
 
-        log(f"文件已修改: {event.src_path}", "magenta")
+        logdebug(f"文件已修改: {event.src_path}")
         self.restart_timer = Timer(1, self.start)
         self.restart_timer.start()
 
     def cleanup(self):
         if self.process:
-            log("执行清理操作...", "red")
+            logwarn("执行清理操作...")
             self.process.terminate()
             self.process.wait()
         if self.restart_timer:
@@ -72,7 +92,7 @@ def main():
     file_watcher = pymon.watcher(watched_dir)
 
     def handle_exit(signum, frame):
-        log("收到中断信号，正在退出...", "red")
+        logerror("收到中断信号，正在退出...")
         file_watcher.stop()
 
     signal.signal(signal.SIGINT, handle_exit)
@@ -80,12 +100,12 @@ def main():
 
     try:
         file_watcher.start()
-        log("监控文件变更...", "green")
+        logsuccess("监控文件变更...")
         while file_watcher.is_alive():
             file_watcher.join(1)
     finally:
         pymon.cleanup()
-        log("PyMon 已终止。", "blue")
+        logsuccess("PyMon 已终止。")
 
 
 if __name__ == "__main__":
