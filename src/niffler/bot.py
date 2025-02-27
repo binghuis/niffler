@@ -1,11 +1,10 @@
 from telegram.ext import ApplicationBuilder
 
-from niffler.config import get_settings
+from niffler.config import settings
 
 
 class Bot:
     def __init__(self):
-        settings = get_settings()
         self.app = ApplicationBuilder().token(settings.tg_bot_token).build()
 
     def add_handler(self, handler):

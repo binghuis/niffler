@@ -1,11 +1,9 @@
-import spacy
-from tweepy import StreamingClient
+import tweepy
 
-nlp = spacy.load("en_core_web_lg")  # 使用更精确的大模型[5](@ref)
-nlp.add_pipe("spacytextblob")  # 添加情感分析组件[3](@ref)
+from niffler.config import settings
+
+client = tweepy.Client(bearer_token=settings.x.bearer_token, wait_on_rate_limit=True)
 
 
-class TwitterAnalyzer(StreamingClient):
-    def __init__(self, bearer_token):
-        super().__init__(bearer_token)
-        self.kol_threshold = 0.8  # KOL概率阈值
+user = client.get_user(username="elonmusk", user_fields=["public_metrics"])
+print(f"粉丝数: {user.data.public_metrics['followers_count']}")
