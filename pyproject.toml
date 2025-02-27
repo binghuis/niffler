@@ -9,8 +9,11 @@ dependencies = [
     "pydantic-settings>=2.6.1",
     "python-telegram-bot>=21.9",
     "httpx>=0.28.1",
+    "tweepy>=4.15.0",
+    "spacy>=3.8.2",
+    "openai>=1.64.0",
 ]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 readme = "README.md"
 license = { text = "MIT" }
 
