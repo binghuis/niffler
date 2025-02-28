@@ -15,3 +15,14 @@ class DEXScreenerConfig(BaseModel):
     api_pairs: str
     api_latest: str
     api_top: str
+
+
+class DeepSeekConfig(BaseModel):
+    api_key: str
+    base_url: str
+    model: str
+
+
+class MongoConfig(BaseModel):
+    url: str
+    name: str

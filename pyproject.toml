@@ -12,6 +12,8 @@ dependencies = [
     "tweepy>=4.15.0",
     "spacy>=3.8.2",
     "openai>=1.64.0",
+    "motor>=3.7.0",
+    "beanie>=1.29.0",
 ]
 requires-python = ">=3.12"
 readme = "README.md"
