@@ -7,8 +7,9 @@ from pydantic_settings import BaseSettings
 from niffler.types import (
     DeepSeekConfig,
     DEXScreenerConfig,
+    GrokConfig,
+    KimiConfig,
     MongoConfig,
-    XAIConfig,
     XConfig,
 )
 
@@ -18,10 +19,16 @@ load_dotenv()
 class Settings(BaseSettings):
     tg_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
 
-    xai: XAIConfig = XAIConfig(
-        api_key=os.getenv("XAI_API_KEY", ""),
+    grok: GrokConfig = GrokConfig(
+        api_key=os.getenv("GROK_API_KEY", ""),
         base_url="https://api.x.ai/v1",
         model="grok-2-latest",
+    )
+
+    kimi: KimiConfig = KimiConfig(
+        api_key=os.getenv("MOONSHOT_API_KEY", ""),
+        base_url="https://api.moonshot.cn/v1",
+        model="moonshot-v1-8k-vision-preview",
     )
 
     x: XConfig = XConfig(bearer_token=os.getenv("X_BEARER_TOKEN", ""))

@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class XAIConfig(BaseModel):
+class GrokConfig(BaseModel):
     api_key: str
     base_url: str
     model: str
@@ -26,3 +26,9 @@ class DeepSeekConfig(BaseModel):
 class MongoConfig(BaseModel):
     url: str
     name: str
+
+
+class KimiConfig(BaseModel):
+    api_key: str
+    base_url: str
+    model: str

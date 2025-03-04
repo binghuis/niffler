@@ -1,4 +1,7 @@
-def user_message(content: str):
+from typing import List
+
+
+def user_message(content: str | List):
     return {
         "role": "user",
         "content": content,

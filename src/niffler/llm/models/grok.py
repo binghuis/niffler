@@ -6,16 +6,17 @@ from niffler.config import settings
 from niffler.llm.message import system_message, user_message
 
 
-class XAI:
+# https://api-docs.deepseek.com/zh-cn/
+class Grok:
     def __init__(self):
         self.client = OpenAI(
-            api_key=settings.xai.api_key,
-            base_url=settings.xai.base_url,
+            api_key=settings.grok.api_key,
+            base_url=settings.grok.base_url,
         )
 
     def chat(self, messages: List[str]):
         completion = self.client.beta.chat.completions.parse(
-            model=settings.xai.model,
+            model=settings.grok.model,
             messages=messages,
             temperature=1,
         )
@@ -24,8 +25,8 @@ class XAI:
 
 
 if __name__ == "__main__":
-    xai = XAI()
-    xai.chat(
+    grok = Grok()
+    grok.chat(
         [
             system_message("我将给你发加密货币的名字，你给我发 ca 地址"),
             user_message("toly"),
