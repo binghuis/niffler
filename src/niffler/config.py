@@ -45,7 +45,9 @@ class Settings(BaseSettings):
         model="deepseek-reasoner",
     )
 
-    mongo: MongoConfig = MongoConfig(name="niffler_db", url="mongodb://localhost:27017")
+    mongo: MongoConfig = MongoConfig(
+        name="niffler_db", url="mongodb://admin:123456@mongo:27017"
+    )
 
 
 @lru_cache
