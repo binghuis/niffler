@@ -1,6 +1,6 @@
 ARG PYTHON_BASE=3.13-slim
 
-# Build stage
+# 构建阶段
 FROM python:$PYTHON_BASE AS builder
 
 RUN pip install -U pdm
@@ -12,7 +12,7 @@ COPY pyproject.toml pdm.lock README.md ./
 
 RUN pdm install --check --prod --no-editable
 
-# Run stage
+# 运行阶段
 FROM python:$PYTHON_BASE
 
 WORKDIR /project
@@ -22,6 +22,6 @@ ENV PATH="/project/.venv/bin:$PATH"
 
 ENV PYTHONPATH="/project/src:$PYTHONPATH"
 
-COPY src /project/src
+COPY src ./src
 
-CMD ["python", "src/niffler/__main__.py"]
+CMD ["uvicorn", "niffler.main:app"]
