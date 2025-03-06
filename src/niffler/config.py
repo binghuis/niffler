@@ -4,7 +4,7 @@ from functools import lru_cache
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-from niffler.types import (
+from niffler.typedefs import (
     DeepSeekConfig,
     DEXScreenerConfig,
     GrokConfig,
