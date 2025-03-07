@@ -2,6 +2,8 @@ services:
   niffler:
     image: niffler:latest
     container_name: niffler-bot
+    ports:
+      - "8000:8000"
     build:
       context: .
     restart: always
@@ -29,9 +31,8 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo/data:/data/db
-    environment:
-      MONGO_ROOT_USERNAME: admin
-      MONGO_ROOT_PASSWORD: 123456
+    env_file:
+      - .env
     networks:
       - niffler-network
     healthcheck:

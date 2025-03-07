@@ -1,5 +1,5 @@
-import os
 from functools import lru_cache
+from os import getenv
 
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
@@ -17,21 +17,21 @@ load_dotenv()
 
 
 class Settings(BaseSettings):
-    tg_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+    tg_bot_token: str = getenv("TELEGRAM_BOT_TOKEN", "")
 
     grok: GrokConfig = GrokConfig(
-        api_key=os.getenv("GROK_API_KEY", ""),
+        api_key=getenv("GROK_API_KEY", ""),
         base_url="https://api.x.ai/v1",
         model="grok-2-latest",
     )
 
     kimi: KimiConfig = KimiConfig(
-        api_key=os.getenv("MOONSHOT_API_KEY", ""),
+        api_key=getenv("MOONSHOT_API_KEY", ""),
         base_url="https://api.moonshot.cn/v1",
         model="moonshot-v1-8k-vision-preview",
     )
 
-    x: XConfig = XConfig(bearer_token=os.getenv("X_BEARER_TOKEN", ""))
+    x: XConfig = XConfig(bearer_token=getenv("X_BEARER_TOKEN", ""))
 
     dexscreener: DEXScreenerConfig = DEXScreenerConfig(
         api_top="https://api.dexscreener.com/token-profiles/top/v1",
@@ -40,13 +40,14 @@ class Settings(BaseSettings):
     )
 
     deepseek: DeepSeekConfig = DeepSeekConfig(
-        api_key=os.getenv("DEEPSEEK_API_KEY", ""),
+        api_key=getenv("DEEPSEEK_API_KEY", ""),
         base_url="https://api.deepseek.com",
         model="deepseek-reasoner",
     )
 
     mongo: MongoConfig = MongoConfig(
-        name="niffler_db", url="mongodb://admin:123456@mongo:27017"
+        name="niffler_db",
+        url=f"mongodb://{getenv('MONGO_ROOT_USERNAME')}:{getenv('MONGO_ROOT_PASSWORD')}@mongo:27017?authSource=admin&directConnection=true",
     )
 
 

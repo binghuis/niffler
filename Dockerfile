@@ -24,4 +24,4 @@ ENV PYTHONPATH="/project/src:$PYTHONPATH"
 
 COPY src ./src
 
-CMD ["uvicorn", "niffler.main:app"]
+CMD ["uvicorn", "niffler.main:app", "--host", "0.0.0.0", "--port", "8000"]
