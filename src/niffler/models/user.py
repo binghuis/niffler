@@ -3,9 +3,8 @@ from pydantic import Field
 
 
 class User(Document):
-    name: str = Field(max_length=50)
-    age: int = Field(gt=0)
-    email: str
+    username: str = Field(max_length=50)
+    userpassword: str = Field(max_length=50)
 
     class Settings:
         name = "users"

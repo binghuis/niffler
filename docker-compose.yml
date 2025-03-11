@@ -15,6 +15,7 @@ services:
       - niffler-network
     depends_on:
       - mongo
+
     mem_limit: 512m
     cpus: 2
     logging:
@@ -31,22 +32,9 @@ services:
       - "27017:27017"
     volumes:
       - ./mongo/data:/data/db
-    env_file:
-      - .env
+    env_file: .env
     networks:
       - niffler-network
-    healthcheck:
-      test:
-        [
-          "CMD",
-          "mongo",
-          "--quiet",
-          "--eval",
-          "db.runCommand({serverStatus:1}).ok",
-        ]
-      interval: 10s
-      timeout: 5s
-      retries: 3
 
 networks:
   niffler-network:

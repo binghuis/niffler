@@ -46,8 +46,10 @@ class Settings(BaseSettings):
     )
 
     mongo: MongoConfig = MongoConfig(
-        name="niffler_db",
-        url=f"mongodb://{getenv('MONGO_ROOT_USERNAME')}:{getenv('MONGO_ROOT_PASSWORD')}@mongo:27017?authSource=admin&directConnection=true",
+        admin_name="admin",
+        admin_password="123456",
+        name="niffler",
+        url=f"mongodb://{getenv('MONGO_ROOT_USERNAME')}:{getenv('MONGO_ROOT_PASSWORD')}@mongo:27017/niffler?authSource=admin&directConnection=true",
     )
 
 
