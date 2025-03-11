@@ -15,7 +15,6 @@ services:
       - niffler-network
     depends_on:
       - mongo
-
     mem_limit: 512m
     cpus: 2
     logging:

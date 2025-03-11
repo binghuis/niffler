@@ -9,11 +9,11 @@ from niffler.models import User
 
 async def connect_db() -> None:
     try:
+        print(settings.mongo)
         client: AsyncIOMotorClient = AsyncIOMotorClient(
             settings.mongo.url,
         )
-        db = client[settings.mongo.name]
-
+        db = client.get_database(settings.mongo.name)
         await init_beanie(
             database=db,
             document_models=[User],

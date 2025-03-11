@@ -49,7 +49,7 @@ class Settings(BaseSettings):
         admin_name="admin",
         admin_password="123456",
         name="niffler",
-        url=f"mongodb://{getenv('MONGO_ROOT_USERNAME')}:{getenv('MONGO_ROOT_PASSWORD')}@mongo:27017/niffler?authSource=admin&directConnection=true",
+        url=f"mongodb://{getenv('MONGO_ROOT_USERNAME')}:{getenv('MONGO_ROOT_PASSWORD')}@127.0.0.1:27017/niffler?authSource=admin&directConnection=true",
     )
 
 
