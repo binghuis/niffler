@@ -1,3 +1,3 @@
-from .user import User
+from .crypto_token import CryptoToken
 
-__all__ = ["User"]
+__all__ = ["CryptoToken"]

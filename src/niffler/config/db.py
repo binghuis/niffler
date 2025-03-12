@@ -4,7 +4,7 @@ from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from niffler.config import settings
-from niffler.models import User
+from niffler.models import CryptoToken
 
 
 async def connect_db() -> None:
@@ -16,7 +16,7 @@ async def connect_db() -> None:
         db = client.get_database(settings.mongo.name)
         await init_beanie(
             database=db,
-            document_models=[User],
+            document_models=[CryptoToken],
         )
 
     except Exception as e:
