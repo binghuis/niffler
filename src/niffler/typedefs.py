@@ -24,8 +24,6 @@ class DeepSeekConfig(BaseModel):
 
 
 class MongoConfig(BaseModel):
-    admin_name: str
-    admin_password: str
     url: str
     name: str
 
