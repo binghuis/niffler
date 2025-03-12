@@ -1,7 +1,5 @@
 services:
   niffler:
-    image: niffler:latest
-    container_name: niffler-bot
     ports:
       - "8000:8000"
     build:
@@ -11,12 +9,8 @@ services:
       - .env
     volumes:
       - ./logs:/project/logs
-    networks:
-      - niffler-network
-    depends_on:
-      - mongo
-    mem_limit: 512m
     cpus: 2
+    mem_limit: 512m
     logging:
       driver: "json-file"
       options:
@@ -24,17 +18,10 @@ services:
         max-file: "3"
 
   mongo:
-    image: mongo:8.0.5
-    container_name: mongo-db
-    restart: always
     ports:
       - "27017:27017"
+    restart: always
+    env_file:
+      - .env
     volumes:
       - ./mongo/data:/data/db
-    env_file: .env
-    networks:
-      - niffler-network
-
-networks:
-  niffler-network:
-    driver: bridge

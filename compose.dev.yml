@@ -1,0 +1,12 @@
+services:
+  niffler:
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+
+  mongo:
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env

@@ -1,0 +1,18 @@
+services:
+  niffler:
+    image: niffler:latest
+    container_name: niffler-bot
+    networks:
+      - niffler-network
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:8.0.5
+    container_name: mongo-db
+    networks:
+      - niffler-network
+
+networks:
+  niffler-network:
+    driver: bridge

@@ -15,8 +15,9 @@ from niffler.routers import crypto_token
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("初始化数据库连接")
+    print("连接数据库")
     await connect_db()
+    print("数据库连接成功")
     yield
     print("关闭数据库连接")
 
