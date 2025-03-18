@@ -1,10 +1,8 @@
 import asyncio
-from pprint import pprint
 
 import httpx
 
 from niffler.config import settings
-from niffler.models.coin import MongoCoin
 
 
 async def fetch_latest_coins():
@@ -28,8 +26,6 @@ if __name__ == "__main__":
     async def main():
         coins = await fetch_latest_coins()
         for coin in coins:
-            coin_detail = await fetch_coin_detail(coin["chainId"], coin["tokenAddress"])
-            pprint(coin_detail)
-            await MongoCoin(coin_detail).insert()
+            await fetch_coin_detail(coin["chainId"], coin["tokenAddress"])
 
     asyncio.run(main())
