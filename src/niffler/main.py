@@ -10,7 +10,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 from niffler.config.db import connect_db
-from niffler.routers import crypto_token
+from niffler.routers import coin
 
 
 @asynccontextmanager
@@ -24,7 +24,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-app.include_router(crypto_token.router)
+app.include_router(coin.router)
 
 
 @app.get("/")

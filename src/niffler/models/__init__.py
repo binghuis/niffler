@@ -1,3 +1,3 @@
-from .crypto_token import CryptoToken
+from .coin import MongoCoin
 
-__all__ = ["CryptoToken"]
+__all__ = ["MongoCoin"]

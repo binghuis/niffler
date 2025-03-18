@@ -2,21 +2,21 @@ from typing import Optional
 
 from beanie import PydanticObjectId
 
-from niffler.models.crypto_token import (
-    CryptoToken,
+from niffler.models.coin import (
+    MongoCoin,
 )
 
 
-class CryptoTokenService:
+class ServiceCoin:
     @staticmethod
-    async def save_token(name: str, symbol: str) -> CryptoToken:
-        token = CryptoToken(name=name, symbol=symbol)
+    async def save_token(name: str, symbol: str) -> MongoCoin:
+        token = MongoCoin(name=name, symbol=symbol)
         await token.insert()
         return token
 
     @staticmethod
-    async def get_token_by_id(token_id: PydanticObjectId) -> CryptoToken:
-        token = await CryptoToken.get(token_id)
+    async def get_token_by_id(token_id: PydanticObjectId) -> MongoCoin:
+        token = await MongoCoin.get(token_id)
         if token is None:
             raise ValueError(f"Token with id {token_id} not found")
         return token
@@ -26,8 +26,8 @@ class CryptoTokenService:
         token_id: PydanticObjectId,
         name: Optional[str] = None,
         symbol: Optional[str] = None,
-    ) -> CryptoToken:
-        token = await CryptoToken.get(token_id)
+    ) -> MongoCoin:
+        token = await MongoCoin.get(token_id)
         if token is None:
             raise ValueError(f"Token with id {token_id} not found")
         if name:
@@ -39,13 +39,13 @@ class CryptoTokenService:
 
     @staticmethod
     async def delete_token(token_id: PydanticObjectId) -> bool:
-        token = await CryptoToken.get(token_id)
+        token = await MongoCoin.get(token_id)
         if token:
             await token.delete()
             return True
         return False
 
     @staticmethod
-    async def get_all_tokens() -> list[CryptoToken]:
-        tokens = await CryptoToken.find_all().to_list()
+    async def get_all_tokens() -> list[MongoCoin]:
+        tokens = await MongoCoin.find_all().to_list()
         return tokens
