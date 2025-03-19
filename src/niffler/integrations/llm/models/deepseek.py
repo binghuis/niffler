@@ -3,7 +3,7 @@ from typing import List
 from openai import OpenAI
 
 from niffler.config import settings
-from niffler.llm.message import system_message, user_message
+from niffler.integrations.llm.message import system_message, user_message
 
 
 class DeepSeek:
