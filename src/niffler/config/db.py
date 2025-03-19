@@ -9,7 +9,6 @@ from niffler.models import MongoCoin
 
 async def connect_db() -> None:
     try:
-        print(settings.mongo)
         client: AsyncIOMotorClient = AsyncIOMotorClient(
             settings.mongo.url,
         )
