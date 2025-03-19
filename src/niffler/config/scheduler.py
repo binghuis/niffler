@@ -20,7 +20,6 @@ class SchedulerManager:
         )
 
     def add_task(self, task: BaseTask) -> bool:
-        """基础添加/替换任务"""
         try:
             self.scheduler.add_job(
                 task.run,
