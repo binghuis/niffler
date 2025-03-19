@@ -49,6 +49,7 @@ class Settings(BaseSettings):
         name="niffler",
         url=f"mongodb://{getenv('MONGO_INITDB_ROOT_USERNAME')}:{getenv('MONGO_INITDB_ROOT_PASSWORD')}@mongo/niffler?authSource=admin&directConnection=true",
     )
+    timezone: str = "Asia/Shanghai"
 
 
 @lru_cache

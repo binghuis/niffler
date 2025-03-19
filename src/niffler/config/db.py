@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from beanie import init_beanie
 from motor.motor_asyncio import AsyncIOMotorClient
 
@@ -7,17 +5,18 @@ from niffler.config import settings
 from niffler.models import MongoCoin
 
 
-async def connect_db() -> None:
-    try:
-        client: AsyncIOMotorClient = AsyncIOMotorClient(
+class DBManager:
+    def __init__(self) -> None:
+        self.client: AsyncIOMotorClient = AsyncIOMotorClient(
             settings.mongo.url,
         )
-        db = client.get_database(settings.mongo.name)
+        self.db = self.client.get_database(settings.mongo.name)
+
+    async def connect(self):
         await init_beanie(
-            database=db,
+            database=self.db,
             document_models=[MongoCoin],
         )
 
-    except Exception as e:
-        pprint(f"MongoDB connection failed: {e}")
-        raise
+    async def close(self):
+        self.client.close()

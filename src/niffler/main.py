@@ -4,57 +4,34 @@
 # bot = Bot()
 # bot.add_handler(CommandHandler("start", start.handler))
 # bot.run_polling()
-import uuid
 from contextlib import asynccontextmanager
-from datetime import datetime
 
-from apscheduler.jobstores.mongodb import MongoDBJobStore
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.interval import IntervalTrigger
 from fastapi import FastAPI
-from pymongo import MongoClient
 
-from niffler.config import settings
-from niffler.config.db import connect_db
+from niffler.config.db import DBManager
+from niffler.config.scheduler import SchedulerManager
 from niffler.routers import coin
+from niffler.tasks.coin_hunter import CoinHunter
 
 app = FastAPI()
 
-
-scheduler = AsyncIOScheduler(
-    jobstores={
-        "default": MongoDBJobStore(
-            database=settings.mongo.name,
-            collection="jobs",
-            client=MongoClient(settings.mongo.url),
-        )
-    },
-    timezone="Asia/Shanghai",
-)
+db = DBManager()
+scheduler = SchedulerManager()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    await connect_db()
-    scheduler.add_job(
-        my_task,
-        IntervalTrigger(seconds=1),
-        id=uuid.uuid4().hex,
-        replace_existing=True,
-    )
-    scheduler.start()
+    await db.connect()
+    scheduler.add_task(CoinHunter())
+    await scheduler.start()
     yield
-    if scheduler.running:
-        scheduler.shutdown(wait=False)
+    await scheduler.shutdown()
+    await db.close()
 
 
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(coin.router)
-
-
-async def my_task():
-    print(f"任务执行时间：{datetime.now()}")
 
 
 @app.get("/")
