@@ -26,6 +26,7 @@ if __name__ == "__main__":
     async def main():
         coins = await fetch_latest_coins()
         for coin in coins:
-            await fetch_coin_detail(coin["chainId"], coin["tokenAddress"])
+            coin_detail = await fetch_coin_detail(coin["chainId"], coin["tokenAddress"])
+            print(coin_detail)
 
     asyncio.run(main())

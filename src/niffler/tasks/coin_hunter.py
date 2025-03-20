@@ -1,6 +1,6 @@
-from datetime import datetime
-
 from apscheduler.triggers.interval import IntervalTrigger
+
+from niffler.integrations.coin import fetch_latest_coins
 
 from .base import BaseTask
 
@@ -15,4 +15,11 @@ class CoinHunter(BaseTask):
         return IntervalTrigger(seconds=1)
 
     async def run(self) -> None:
-        print(f"任务执行时间：{datetime.now()}")
+        coins = await fetch_latest_coins()
+        # print(coins)
+        # for coin in coins:
+        #     if MongoCoin.find_one({"pairAddress": coin["tokenAddress"]}) is None:
+        #         coin_detail = await fetch_coin_detail(
+        #             coin["chainId"], coin["tokenAddress"]
+        #         )
+        #         await MongoCoin(**coin_detail["pairs"][0]).insert()
