@@ -5,7 +5,7 @@ from niffler.integrations.coin import fetch_latest_coins
 from .base import BaseTask
 
 
-class CoinHunter(BaseTask):
+class DexscreenerHunter(BaseTask):
     @property
     def id(self) -> str:
         return "coin_hunter"

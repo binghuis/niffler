@@ -7,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-class WebpageCapturer:
+class XCapturer:
     DEFAULT_DELAY = 5
     USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
     OUTPUT_PATH = "screenshots"
@@ -74,7 +74,7 @@ class WebpageCapturer:
 
 
 if __name__ == "__main__":
-    capturer = WebpageCapturer()
+    capturer = XCapturer()
 
     capturer.capture("https://x.com/10Ronaldinho")
     capturer.capture("https://x.com/elonmusk")

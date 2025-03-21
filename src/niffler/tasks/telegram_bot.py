@@ -3,7 +3,7 @@ from telegram.ext import ApplicationBuilder
 from niffler.config import settings
 
 
-class Bot:
+class TelegramBot:
     def __init__(self):
         self.app = ApplicationBuilder().token(settings.tg_bot_token).build()
 

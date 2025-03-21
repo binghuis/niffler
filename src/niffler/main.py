@@ -3,27 +3,27 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from telegram.ext import CommandHandler
 
-from niffler.bot import Bot
 from niffler.config.db import DBManager
 from niffler.config.scheduler import SchedulerManager
 from niffler.handlers import start
 from niffler.routers import coin
-from niffler.tasks.coin_hunter import CoinHunter
+from niffler.tasks.dexscreener_hunter import DexscreenerHunter
+from niffler.tasks.telegram_bot import TelegramBot
 
 app = FastAPI()
 
 db = DBManager()
 scheduler = SchedulerManager()
 
-bot = Bot()
+tg_bot = TelegramBot()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    bot.add_handler(CommandHandler("start", start.handler))
-    bot.run_polling()
+    tg_bot.add_handler(CommandHandler("start", start.handler))
+    tg_bot.run_polling()
     await db.connect()
-    scheduler.add_task(CoinHunter())
+    scheduler.add_task(DexscreenerHunter())
     await scheduler.start()
     yield
     await scheduler.shutdown()
