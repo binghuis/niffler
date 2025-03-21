@@ -19,7 +19,7 @@ class DexscreenerHunter(BaseTask):
         # print(coins)
         # for coin in coins:
         #     if MongoCoin.find_one({"pairAddress": coin["tokenAddress"]}) is None:
-        #         coin_detail = await fetch_coin_detail(
+        #         coin_detail = await fetch_coin_pair_data(
         #             coin["chainId"], coin["tokenAddress"]
         #         )
         #         await MongoCoin(**coin_detail["pairs"][0]).insert()
