@@ -1,3 +1,5 @@
+import os
+from datetime import datetime
 from os import path
 from urllib.parse import urlparse
 
@@ -6,16 +8,16 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+DEFAULT_DELAY = 5
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
+OUTPUT_PATH = "screenshots"
+
 
 class XCapturer:
-    DEFAULT_DELAY = 5
-    USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36"
-    OUTPUT_PATH = "screenshots"
-
     def __init__(self):
         options = webdriver.ChromeOptions()
         options.add_argument("--headless")
-        options.add_argument(f"user-agent={self.USER_AGENT}")
+        options.add_argument(f"user-agent={USER_AGENT}")
         options.add_argument("--disable-gpu")
         prefs = {
             # "profile.managed_default_content_settings.images": 2,
@@ -31,7 +33,7 @@ class XCapturer:
             return
 
         self.driver.get(url)
-        WebDriverWait(self.driver, self.DEFAULT_DELAY).until(
+        WebDriverWait(self.driver, DEFAULT_DELAY).until(
             EC.presence_of_element_located(
                 (By.CSS_SELECTOR, '[data-testid="cellInnerDiv"]')
             )
@@ -58,7 +60,10 @@ class XCapturer:
         main_element = self.driver.find_element(
             By.CSS_SELECTOR, '[data-testid="primaryColumn"]'
         )
-        main_element.screenshot(f"{path.join(self.OUTPUT_PATH, account_name)}.png")
+        output_dir = path.join(OUTPUT_PATH, datetime.now().strftime("%Y_%m_%d"))
+        os.makedirs(output_dir, exist_ok=True)
+
+        main_element.screenshot(f"{path.join(output_dir, account_name)}.png")
 
     def close(self):
         self.driver.quit()
