@@ -37,5 +37,4 @@ prod = "docker-compose -f compose.yml -f compose.prod.yml up --build -d"
 
 [dependency-groups]
 dev = [
-    "rich>=13.9.4",
 ]
