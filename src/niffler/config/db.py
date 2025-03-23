@@ -15,7 +15,9 @@ class DBManager:
     async def connect(self):
         await init_beanie(
             database=self.db,
-            document_models=[MongoCoin],
+            document_models=[
+                MongoCoin,
+            ],
         )
 
     async def close(self):
