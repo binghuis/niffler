@@ -13,7 +13,7 @@ class DexscreenerHunter(BaseTask):
 
     @property
     def trigger(self) -> IntervalTrigger:
-        return IntervalTrigger(seconds=1)
+        return IntervalTrigger(seconds=5)
 
     async def run(self) -> None:
         coins = await fetch_latest_coins()

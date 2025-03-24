@@ -1,4 +1,3 @@
-import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -25,7 +24,7 @@ async def lifespan(app: FastAPI):
     await db.connect()
     scheduler.add_task(DexscreenerHunter())
     await scheduler.start()
-    asyncio.create_task(tg_bot.run_polling())
+    tg_bot.run_polling()
     yield
     await scheduler.shutdown()
     await db.close()
